@@ -7,7 +7,7 @@ import 'package:flutter_app_food/data/share_pre/share_preference.dart';
 class DioClient {
   Dio? _dio;
   static BaseOptions _options = new BaseOptions(
-    baseUrl: "http://192.168.1.7:8000/",
+    baseUrl: "https://freeapi.code4func.com/api/v1/",
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );
