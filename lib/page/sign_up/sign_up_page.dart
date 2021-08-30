@@ -26,25 +26,43 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-              flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-          Expanded(
-              flex: 4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildDisplayTextField(),
-                  _buildPhoneTextField(),
-                  _buildPasswordTextField(),
-                ],
-              )),
-          Expanded(child: _buildButtonSignUp())
-        ],
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+                flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+            Expanded(
+                flex: 4,
+                child: LayoutBuilder(
+                  builder: (context, constraint){
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraint.maxHeight
+                        ),
+                        child: IntrinsicHeight(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDisplayTextField(),
+                              SizedBox(height: 10),
+                              _buildPhoneTextField(),
+                              SizedBox(height: 10),
+                              _buildPasswordTextField(),
+                              SizedBox(height: 10),
+                              _buildButtonSignUp()
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -136,7 +154,7 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
 
   Widget _buildButtonSignUp() {
     return Container(
-
+      margin: EdgeInsets.only(bottom: 10),
       child: Center(child: ButtonWidget(title: "Sign Up", onPress: () {})),
     );
   }

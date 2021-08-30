@@ -6,7 +6,11 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-        title: "Sign In", child: SignInContainer(), providers: [], actions: []);
+        title: "Sign In",
+        child: SignInContainer(),
+        providers: [],
+        actions: []
+    );
   }
 }
 
@@ -22,27 +26,29 @@ class _SignInContainerState extends State<SignInContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          Expanded(
-              flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-          Expanded(
-            flex: 4,
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildPhoneTextField(),
-                  _buildPasswordTextField(),
-                  _buildButtonSignIn(),
-                ],
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Expanded(
+                flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+            Expanded(
+              flex: 4,
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildPhoneTextField(),
+                    _buildPasswordTextField(),
+                    _buildButtonSignIn(),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(child: _buildTextSignUp())
-        ],
+            Expanded(child: _buildTextSignUp())
+          ],
+        ),
       ),
     );
   }

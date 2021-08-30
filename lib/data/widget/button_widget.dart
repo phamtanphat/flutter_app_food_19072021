@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class ButtonWidget extends StatelessWidget {
   final String title;
   final VoidCallback onPress;
@@ -13,7 +14,7 @@ class ButtonWidget extends StatelessWidget {
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.blue[500];
-            } else if (states.contains(MaterialState.disabled)){
+            } else if (states.contains(MaterialState.disabled)) {
               return Colors.grey;
             }
             return Colors.blueAccent;
