@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_food/page/sign_in/sign_in.dart';
+import 'package:flutter_app_food/page/sign_in/sign_in_page.dart';
+import 'package:flutter_app_food/page/sign_up/sign_up_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/sign-in",
       routes: {
-        "/sign-in" : (context) => SignInPage()
+        "/sign-in" : (context) => SignInPage(),
+        "/sign-up" : (context) =>SignUpPage(),
       },
     );
   }

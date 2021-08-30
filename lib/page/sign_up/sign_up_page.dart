@@ -2,69 +2,79 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
 
-class SignInPage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-        title: "Sign In", child: SignInContainer(), providers: [], actions: []);
+      title: "Sign Up",
+      providers: [],
+      actions: [],
+      child: SignUpPageContainer(),
+    );
   }
 }
 
-class SignInContainer extends StatefulWidget {
+class SignUpPageContainer extends StatefulWidget {
   @override
-  _SignInContainerState createState() => _SignInContainerState();
+  _SignUpPageContainerState createState() => _SignUpPageContainerState();
 }
 
-class _SignInContainerState extends State<SignInContainer> {
+class _SignUpPageContainerState extends State<SignUpPageContainer> {
+  final _displayController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passController = TextEditingController();
-  var isPassVisible = true;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
               flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
           Expanded(
-            flex: 4,
-            child: Container(
+              flex: 4,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  _buildDisplayTextField(),
                   _buildPhoneTextField(),
                   _buildPasswordTextField(),
-                  _buildButtonSignIn(),
                 ],
-              ),
-            ),
-          ),
-          Expanded(child: _buildTextSignUp())
+              )),
+          Expanded(child: _buildButtonSignUp())
         ],
       ),
     );
   }
 
-  Widget _buildTextSignUp() {
+  Widget _buildDisplayTextField() {
     return Container(
-        margin: EdgeInsets.only(left: 10, right: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Don't have an account!"),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, "/sign-up");
-              },
-              child: Text("Sign Up",
-                  style: TextStyle(
-                      color: Colors.red, decoration: TextDecoration.underline)),
-            )
-          ],
-        ));
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: TextField(
+        maxLines: 1,
+        controller: _displayController,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          hintText: "Example : Mr. John",
+          fillColor: Colors.black12,
+          filled: true,
+          prefixIcon: Icon(Icons.person, color: Colors.blue),
+          labelStyle: TextStyle(color: Colors.blue),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+        ),
+      ),
+    );
   }
 
   Widget _buildPhoneTextField() {
@@ -76,9 +86,9 @@ class _SignInContainerState extends State<SignInContainer> {
         keyboardType: TextInputType.phone,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
+          hintText: "Phone ((+84) 123 456 789)",
           fillColor: Colors.black12,
           filled: true,
-          hintText: "Email",
           labelStyle: TextStyle(color: Colors.blue),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
@@ -89,7 +99,7 @@ class _SignInContainerState extends State<SignInContainer> {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(width: 0, color: Colors.black12)),
-          prefixIcon: Icon(Icons.email, color: Colors.blue),
+          prefixIcon: Icon(Icons.phone, color: Colors.blue),
         ),
       ),
     );
@@ -101,13 +111,14 @@ class _SignInContainerState extends State<SignInContainer> {
       child: TextField(
         maxLines: 1,
         controller: _passController,
-        obscureText: isPassVisible,
+        obscureText: true,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
+          hintText: "Pass word",
           fillColor: Colors.black12,
           filled: true,
-          hintText: "PassWord",
+          labelStyle: TextStyle(color: Colors.blue),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(width: 0, color: Colors.black12)),
@@ -117,19 +128,16 @@ class _SignInContainerState extends State<SignInContainer> {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(width: 0, color: Colors.black12)),
-          labelStyle: TextStyle(color: Colors.blue),
           prefixIcon: Icon(Icons.lock, color: Colors.blue),
         ),
       ),
     );
   }
 
-  Widget _buildButtonSignIn() {
+  Widget _buildButtonSignUp() {
     return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: ButtonWidget(
-          title: "Sign In",
-          onPress: () {},
-        ));
+
+      child: Center(child: ButtonWidget(title: "Sign Up", onPress: () {})),
+    );
   }
 }
