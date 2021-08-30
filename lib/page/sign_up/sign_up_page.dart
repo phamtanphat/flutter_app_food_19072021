@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
+import 'package:flutter_app_food/repository/authentication_repository.dart';
+import 'package:flutter_app_food/request/authentication_request.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -27,6 +29,22 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
   final _addressController = TextEditingController();
 
   @override
+  void didUpdateWidget(covariant SignUpPageContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    AuthenticationRequest request = AuthenticationRequest();
+    AuthenticationRepository repository = AuthenticationRepository();
+    repository.updateAuthenticationRequest(request);
+
+    repository.signUp(
+        "Nguyen Van ef",
+        "demotest1@gmail.com",
+        "001122339911",
+        "poiuytrewq",
+        "quan 1"
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
@@ -39,12 +57,11 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
             Expanded(
                 flex: 4,
                 child: LayoutBuilder(
-                  builder: (context, constraint){
+                  builder: (context, constraint) {
                     return SingleChildScrollView(
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: constraint.maxHeight
-                        ),
+                        constraints:
+                            BoxConstraints(minHeight: constraint.maxHeight),
                         child: IntrinsicHeight(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
