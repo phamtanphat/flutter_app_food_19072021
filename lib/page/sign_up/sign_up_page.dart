@@ -23,6 +23,8 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
   final _displayController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,10 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               _buildDisplayTextField(),
+                              SizedBox(height: 10),
+                              _buildAddressTextField(),
+                              SizedBox(height: 10),
+                              _buildEmailTextField(),
                               SizedBox(height: 10),
                               _buildPhoneTextField(),
                               SizedBox(height: 10),
@@ -80,6 +86,62 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
           fillColor: Colors.black12,
           filled: true,
           prefixIcon: Icon(Icons.person, color: Colors.blue),
+          labelStyle: TextStyle(color: Colors.blue),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddressTextField() {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: TextField(
+        maxLines: 1,
+        controller: _addressController,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          hintText: "Example : Mr. John",
+          fillColor: Colors.black12,
+          filled: true,
+          prefixIcon: Icon(Icons.map, color: Colors.blue),
+          labelStyle: TextStyle(color: Colors.blue),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.black12)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmailTextField() {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: TextField(
+        maxLines: 1,
+        controller: _emailController,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          hintText: "Email : abc@gmail.com",
+          fillColor: Colors.black12,
+          filled: true,
+          prefixIcon: Icon(Icons.email, color: Colors.blue),
           labelStyle: TextStyle(color: Colors.blue),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
