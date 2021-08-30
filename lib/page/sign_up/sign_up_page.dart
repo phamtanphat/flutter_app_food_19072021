@@ -37,8 +37,8 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
 
     repository.signUp(
         "Nguyen Van ef",
-        "demote21wrq1@gmail.com",
-        "00112ww9wq11",
+        "demte2w21rq11@gmail.com",
+        "012w9w31q11",
         "poiuytrewq",
         "quan 1"
     );
