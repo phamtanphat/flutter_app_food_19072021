@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
+import 'package:flutter_app_food/data/widget/loading_widget.dart';
 import 'package:flutter_app_food/page/sign_up/sign_up_bloc.dart';
+import 'package:flutter_app_food/page/sign_up/sign_up_event.dart';
 import 'package:flutter_app_food/repository/authentication_repository.dart';
 import 'package:flutter_app_food/request/authentication_request.dart';
 import 'package:provider/provider.dart';
@@ -45,48 +47,58 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
   final _passController = TextEditingController();
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
+  late SignUpBloc bloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = context.read<SignUpBloc>();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-                flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-            Expanded(
-                flex: 4,
-                child: LayoutBuilder(
-                  builder: (context, constraint) {
-                    return SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: constraint.maxHeight),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDisplayTextField(),
-                              SizedBox(height: 10),
-                              _buildAddressTextField(),
-                              SizedBox(height: 10),
-                              _buildEmailTextField(),
-                              SizedBox(height: 10),
-                              _buildPhoneTextField(),
-                              SizedBox(height: 10),
-                              _buildPasswordTextField(),
-                              SizedBox(height: 10),
-                              _buildButtonSignUp()
-                            ],
+    return LoadingWidget(
+      bloc: bloc,
+      child: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                  flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+              Expanded(
+                  flex: 4,
+                  child: LayoutBuilder(
+                    builder: (context, constraint) {
+                      return SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(minHeight: constraint.maxHeight),
+                          child: IntrinsicHeight(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildDisplayTextField(),
+                                SizedBox(height: 10),
+                                _buildAddressTextField(),
+                                SizedBox(height: 10),
+                                _buildEmailTextField(),
+                                SizedBox(height: 10),
+                                _buildPhoneTextField(),
+                                SizedBox(height: 10),
+                                _buildPasswordTextField(),
+                                SizedBox(height: 10),
+                                _buildButtonSignUp()
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                )),
-          ],
+                      );
+                    },
+                  )),
+            ],
+          ),
         ),
       ),
     );
@@ -129,7 +141,7 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          hintText: "Example : Mr. John",
+          hintText: "Example : district 1",
           fillColor: Colors.black12,
           filled: true,
           prefixIcon: Icon(Icons.map, color: Colors.blue),
@@ -236,7 +248,19 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
   Widget _buildButtonSignUp() {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
-      child: Center(child: ButtonWidget(title: "Sign Up", onPress: () {})),
+      child: Center(child: ButtonWidget(title: "Sign Up", onPress: () {
+
+        String fullName = _displayController.text;
+        String email = _emailController.text;
+        String phone = _phoneController.text;
+        String password = _passController.text;
+        String address = _addressController.text;
+
+        if (fullName.length > 0 && email.length > 0 && phone.length > 0 && password.length > 0 && address.length > 0 ){
+          bloc.eventSink.add(SignUpEvent(fullName: fullName, email: email, phone: phone, password: password, address: address));
+        }
+
+      })),
     );
   }
 }

@@ -10,7 +10,6 @@ import 'package:flutter_app_food/repository/authentication_repository.dart';
 class SignUpBloc extends BaseBloc {
   late AuthenticationRepository _authenRepo;
 
-  StreamController<UserModel> _responseUserModel = StreamController();
 
   SignUpBloc();
 
@@ -30,7 +29,7 @@ class SignUpBloc extends BaseBloc {
 
   void handleSignUp(SignUpEvent event)  {
     loadingSink.add(true);
-    Future.delayed(Duration(seconds: 2000) , () async{
+    Future.delayed(Duration(seconds: 2) , () async{
       try {
         ResponseModel<UserModel> responseModel = await _authenRepo.signUp(
             event.fullName,
@@ -39,10 +38,10 @@ class SignUpBloc extends BaseBloc {
             event.password,
             event.address);
         UserModel userModel = responseModel.data!;
-        _responseUserModel.sink.add(userModel);
+        print(userModel.toString());
         loadingSink.add(false);
       } catch (e) {
-        _responseUserModel.sink.addError(e);
+        print(e);
       }
     });
   }
@@ -50,6 +49,6 @@ class SignUpBloc extends BaseBloc {
   @override
   void dispose() {
     super.dispose();
-    _responseUserModel.close();
+
   }
 }
