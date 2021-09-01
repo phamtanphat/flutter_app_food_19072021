@@ -36,10 +36,10 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
     repository.updateAuthenticationRequest(request);
 
     repository.signUp(
-        "Nguyen Van ef",
-        "demte2w21rq11@gmail.com",
-        "012w9w31q11",
-        "poiuytrewq",
+        "Nguyen2 Van ef",
+        "demte22w211rq11@gmail.com",
+        "012w92w311q311",
+        "poiuy2trewqr",
         "quan 1"
     );
   }
