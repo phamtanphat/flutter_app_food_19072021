@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
+import 'package:flutter_app_food/data/widget/container_listener_widget.dart';
 import 'package:flutter_app_food/data/widget/loading_widget.dart';
 import 'package:flutter_app_food/page/sign_up/sign_up_bloc.dart';
 import 'package:flutter_app_food/page/sign_up/sign_up_event.dart';
@@ -57,47 +58,60 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingWidget(
-      bloc: bloc,
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                  flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-              Expanded(
-                  flex: 4,
-                  child: LayoutBuilder(
-                    builder: (context, constraint) {
-                      return SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minHeight: constraint.maxHeight),
-                          child: IntrinsicHeight(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildDisplayTextField(),
-                                SizedBox(height: 10),
-                                _buildAddressTextField(),
-                                SizedBox(height: 10),
-                                _buildEmailTextField(),
-                                SizedBox(height: 10),
-                                _buildPhoneTextField(),
-                                SizedBox(height: 10),
-                                _buildPasswordTextField(),
-                                SizedBox(height: 10),
-                                _buildButtonSignUp()
-                              ],
+    return ContainerListenerWidget<SignUpBloc>(
+      callback: (event){
+        switch(event.runtimeType){
+          case SignUpSuccess :
+             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đăng ký thành công")));
+             Navigator.pop(context);
+            break;
+          case SignUpFail :
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text((event as SignUpFail).message)));
+            break;
+        }
+      },
+      child: LoadingWidget(
+        bloc: bloc,
+        child: SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                    flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+                Expanded(
+                    flex: 4,
+                    child: LayoutBuilder(
+                      builder: (context, constraint) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minHeight: constraint.maxHeight),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDisplayTextField(),
+                                  SizedBox(height: 10),
+                                  _buildAddressTextField(),
+                                  SizedBox(height: 10),
+                                  _buildEmailTextField(),
+                                  SizedBox(height: 10),
+                                  _buildPhoneTextField(),
+                                  SizedBox(height: 10),
+                                  _buildPasswordTextField(),
+                                  SizedBox(height: 10),
+                                  _buildButtonSignUp()
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  )),
-            ],
+                        );
+                      },
+                    )),
+              ],
+            ),
           ),
         ),
       ),

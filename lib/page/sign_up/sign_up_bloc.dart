@@ -37,11 +37,14 @@ class SignUpBloc extends BaseBloc {
             event.phone,
             event.password,
             event.address);
-        UserModel userModel = responseModel.data!;
-        print(userModel.toString());
+        UserModel? userModel = responseModel.data;
+        if (userModel != null){
+          progressSink.add(SignUpSuccess());
+        }
         loadingSink.add(false);
       } catch (e) {
-        print(e);
+        progressSink.add(SignUpFail(message: e.toString()));
+        loadingSink.add(false);
       }
     });
   }
@@ -49,6 +52,5 @@ class SignUpBloc extends BaseBloc {
   @override
   void dispose() {
     super.dispose();
-
   }
 }

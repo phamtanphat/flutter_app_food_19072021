@@ -23,3 +23,18 @@ class SignUpEvent extends SignUpEventBase{
   // TODO: implement props
   List<Object?> get props => [];
 }
+
+class SignUpSuccess extends SignUpEventBase{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class SignUpFail extends SignUpEventBase{
+  String message;
+
+  SignUpFail({required this.message});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [message];
+}
