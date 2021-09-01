@@ -24,7 +24,7 @@ abstract class BaseBloc extends ChangeNotifier {
     });
   }
 
-  void dispatch(BaseEvent event) {}
+  void dispatch(BaseEvent event);
 
   @override
   void dispose() {

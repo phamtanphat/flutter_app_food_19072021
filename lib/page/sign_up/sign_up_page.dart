@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
+import 'package:flutter_app_food/page/sign_up/sign_up_bloc.dart';
 import 'package:flutter_app_food/repository/authentication_repository.dart';
 import 'package:flutter_app_food/request/authentication_request.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
       title: "Sign Up",
-      providers: [],
+      providers: [
+        Provider(create: (_) => AuthenticationRequest()),
+        ProxyProvider<AuthenticationRequest, AuthenticationRepository>(
+          create: (_) => AuthenticationRepository(),
+          update: (context , request , repository){
+            repository!.updateAuthenticationRequest(request);
+            return repository;
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthenticationRepository , SignUpBloc>(
+          create: (_) => SignUpBloc(),
+          update: (context , repo , bloc){
+            bloc!.updateAuthenticationRepository(repo);
+            return bloc;
+          },
+        )
+      ],
       actions: [],
       child: SignUpPageContainer(),
     );
@@ -27,22 +45,6 @@ class _SignUpPageContainerState extends State<SignUpPageContainer> {
   final _passController = TextEditingController();
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
-
-  @override
-  void didUpdateWidget(covariant SignUpPageContainer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    AuthenticationRequest request = AuthenticationRequest();
-    AuthenticationRepository repository = AuthenticationRepository();
-    repository.updateAuthenticationRequest(request);
-
-    repository.signUp(
-        "Nguyen2 Van ef",
-        "demte22w211rq11@gmail.com",
-        "012w92w311q311",
-        "poiuy2trewqr",
-        "quan 1"
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
