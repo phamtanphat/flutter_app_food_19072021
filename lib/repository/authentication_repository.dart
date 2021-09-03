@@ -32,6 +32,23 @@ class AuthenticationRepository {
     }
     return completer.future;
   }
+
+  Future<ResponseModel<UserModel>> signIn(String email,String password) async{
+    Completer<ResponseModel<UserModel>> completer = Completer<ResponseModel<UserModel>>();
+    try{
+      Response response = await authenticationRequest.signIn(email,password);
+      if (response.statusCode == 200){
+        ResponseModel<UserModel> data = ResponseModel.fromJson(response.data, UserModel.fromJsonModel);
+        completer.complete(data);
+      }
+    } on DioError catch (dioError){
+      completer.completeError(dioError.response?.data["message"]);
+    }
+    catch(e){
+      completer.completeError(e.toString());
+    }
+    return completer.future;
+  }
 }
 
 

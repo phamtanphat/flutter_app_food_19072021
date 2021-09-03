@@ -16,4 +16,11 @@ class AuthenticationRequest {
       "address": address
     });
   }
+
+  Future signIn(String email , String password){
+    return dioClient.dio.post("user/sign-in", data: {
+      "email": email,
+      "password": password,
+    });
+  }
 }
