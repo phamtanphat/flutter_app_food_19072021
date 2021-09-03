@@ -13,7 +13,6 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-      title: "Sign Up",
       providers: [
         Provider(create: (_) => AuthenticationRequest()),
         ProxyProvider<AuthenticationRequest, AuthenticationRepository>(
@@ -31,7 +30,9 @@ class SignUpPage extends StatelessWidget {
           },
         )
       ],
-      actions: [],
+      appBar: AppBar(
+        title: Text("Sign Up"),
+      ),
       child: SignUpPageContainer(),
     );
   }

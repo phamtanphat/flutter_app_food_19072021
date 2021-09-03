@@ -3,16 +3,11 @@ import 'package:provider/single_child_widget.dart';
 import 'package:provider/provider.dart';
 
 class PageContainer extends StatelessWidget {
-  final String title;
   final Widget child;
   final List<SingleChildWidget> providers;
-  final List<Widget> actions;
+  AppBar? appBar;
 
-  PageContainer(
-      {required this.title,
-      required this.child,
-      required this.providers,
-      required this.actions});
+  PageContainer({required this.child, required this.providers, this.appBar});
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +16,13 @@ class PageContainer extends StatelessWidget {
         return MultiProvider(
           providers: [...providers],
           child: Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-              actions: actions,
-            ),
+            appBar: this.appBar == null ? null : this.appBar,
             body: child,
           ),
         );
       } else {
         return Scaffold(
-          appBar: AppBar(
-            title: Text(title),
-            actions: actions,
-          ),
+          appBar: this.appBar == null ? null : this.appBar,
           body: child,
         );
       }

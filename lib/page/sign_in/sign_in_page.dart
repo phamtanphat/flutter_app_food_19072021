@@ -13,7 +13,6 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-        title: "Sign In",
         child: SignInContainer(),
         providers: [
           Provider(create: (_) => AuthenticationRequest()),
@@ -32,7 +31,9 @@ class SignInPage extends StatelessWidget {
             },
           )
         ],
-        actions: []
+        appBar: AppBar(
+          title: Text("Sign In"),
+        ),
     );
   }
 }

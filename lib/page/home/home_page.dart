@@ -5,10 +5,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-        title: "Home",
         child: HomePageContainer(),
         providers: [],
-        actions: []
     );
   }
 }

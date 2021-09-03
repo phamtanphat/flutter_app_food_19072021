@@ -36,6 +36,7 @@ dependencies:
   intl: "^0.16.1"
   provider: ^6.0.0
   rxdart: ^0.27.1
+  lottie: ^1.1.0
 
 
 dev_dependencies:
@@ -57,6 +58,7 @@ flutter:
   assets:
     - assets/images/icon_cookie.jpg
     - assets/images/ic_hello_food.png
+    - assets/animations/animation_splash.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
