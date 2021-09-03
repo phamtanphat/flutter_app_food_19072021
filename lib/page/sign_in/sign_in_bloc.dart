@@ -26,12 +26,12 @@ class SignInBloc extends BaseBloc{
   void dispatch(BaseEvent event) {
     switch(event.runtimeType){
       case SignInEvent :
-        handleSignIn(event as SignInEvent);
+        _handleSignIn(event as SignInEvent);
         break;
     }
   }
 
-  void handleSignIn(SignInEvent event) {
+  void _handleSignIn(SignInEvent event) {
     loadingSink.add(true);
     Future.delayed(Duration(seconds: 2) , () async{
       try{

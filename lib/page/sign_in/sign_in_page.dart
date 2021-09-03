@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
 import 'package:flutter_app_food/data/widget/button_widget.dart';
+import 'package:flutter_app_food/data/widget/container_listener_widget.dart';
+import 'package:flutter_app_food/data/widget/loading_widget.dart';
+import 'package:flutter_app_food/page/sign_in/sign_in_bloc.dart';
+import 'package:flutter_app_food/page/sign_in/sign_in_event.dart';
+import 'package:flutter_app_food/repository/authentication_repository.dart';
+import 'package:flutter_app_food/request/authentication_request.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   @override
@@ -8,7 +15,23 @@ class SignInPage extends StatelessWidget {
     return PageContainer(
         title: "Sign In",
         child: SignInContainer(),
-        providers: [],
+        providers: [
+          Provider(create: (_) => AuthenticationRequest()),
+          ProxyProvider<AuthenticationRequest, AuthenticationRepository>(
+            create: (_) => AuthenticationRepository(),
+            update: (context , request , repository){
+              repository!.updateAuthenticationRequest(request);
+              return repository;
+            },
+          ),
+          ChangeNotifierProxyProvider<AuthenticationRepository , SignInBloc>(
+            create: (_) => SignInBloc(),
+            update: (context , repo , bloc){
+              bloc!.updateRepository(repo);
+              return bloc;
+            },
+          )
+        ],
         actions: []
     );
   }
@@ -20,34 +43,56 @@ class SignInContainer extends StatefulWidget {
 }
 
 class _SignInContainerState extends State<SignInContainer> {
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passController = TextEditingController();
   var isPassVisible = true;
+  late SignInBloc bloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = context.read();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Expanded(
-                flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildPhoneTextField(),
-                    _buildPasswordTextField(),
-                    _buildButtonSignIn(),
-                  ],
+    return ContainerListenerWidget<SignInBloc>(
+      callback: (event){
+          switch(event.runtimeType){
+            case SignInSuccess:
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đăng nhập thành công")));
+              break;
+            case SignInFail:
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text((event as SignInFail).message)));
+              break;
+          }
+      },
+      child: SafeArea(
+        child: LoadingWidget(
+          bloc: bloc,
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildPhoneTextField(),
+                        _buildPasswordTextField(),
+                        _buildButtonSignIn(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(child: _buildTextSignUp())
+              ],
             ),
-            Expanded(child: _buildTextSignUp())
-          ],
+          ),
         ),
       ),
     );
@@ -78,8 +123,8 @@ class _SignInContainerState extends State<SignInContainer> {
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
-        controller: _phoneController,
-        keyboardType: TextInputType.phone,
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           fillColor: Colors.black12,
@@ -135,7 +180,11 @@ class _SignInContainerState extends State<SignInContainer> {
         margin: EdgeInsets.only(top: 20),
         child: ButtonWidget(
           title: "Sign In",
-          onPress: () {},
+          onPress: () {
+            String email = _emailController.text;
+            String password = _passController.text;
+            bloc.eventSink.add(SignInEvent(email: email,password: password));
+          },
         ));
   }
 }
