@@ -38,4 +38,11 @@ class ProductModel{
     updatedAt = json['updatedAt'];
   }
 
+
+  static List<ProductModel> pareJsonModelToList(List lst){
+    List<ProductModel> data = lst.map((json) => ProductModel.fromJson(json)).toList();
+    return data;
+  }
+  static ProductModel fromJsonModel(Map<String, dynamic> json) => ProductModel.fromJson(json);
+
 }
