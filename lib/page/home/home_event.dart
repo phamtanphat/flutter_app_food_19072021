@@ -10,3 +10,4 @@ class HomeEventGetListProduct extends HomeEventBase{
   List<Object?> get props => [];
 
 }
+

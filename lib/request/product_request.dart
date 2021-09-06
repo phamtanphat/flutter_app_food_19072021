@@ -6,4 +6,5 @@ class ProductRequest{
   Future getListProduct(){
     return DioClient.instance.dio.get("food/list/0/10");
   }
+
 }
