@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
+import 'package:flutter_app_food/data/constants/key.dart';
+import 'package:flutter_app_food/data/share_pre/share_preference.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatelessWidget {
@@ -7,7 +9,8 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageContainer(
         child: SplashPageContainer(),
-        providers: [],);
+        providers: [],
+    );
   }
 }
 
@@ -19,6 +22,21 @@ class SplashPageContainer extends StatefulWidget {
 }
 
 class _SplashPageContainerState extends State<SplashPageContainer> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Future.delayed(Duration(seconds: 3 ) , () async{
+      var token = SPref.instance.get(ConstantKey.TOKEN);
+      if (token != null){
+        Navigator.pushReplacementNamed(context, "/home");
+      }else{
+        Navigator.pushReplacementNamed(context, "/sign-in");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

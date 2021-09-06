@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
-class HomePage extends StatelessWidget {
 
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageContainer(
-        child: HomePageContainer(),
-        providers: [],
+      child: HomePageContainer(),
+      providers: [],
+      appBar: AppBar(
+        title: Text("Product"),
+      ),
     );
   }
 }
@@ -24,4 +27,3 @@ class _HomePageContainerState extends State<HomePageContainer> {
     return Container();
   }
 }
-
