@@ -18,4 +18,11 @@ class SPref {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.get(key);
   }
+
+  void clearSPref() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.clear();
+  }
+
+
 }

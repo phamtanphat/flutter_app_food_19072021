@@ -62,6 +62,7 @@ class _SignInContainerState extends State<SignInContainer> {
           switch(event.runtimeType){
             case SignInSuccess:
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đăng nhập thành công")));
+              Navigator.pushReplacementNamed(context, "/home");
               break;
             case SignInFail:
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text((event as SignInFail).message)));

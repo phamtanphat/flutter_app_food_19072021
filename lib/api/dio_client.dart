@@ -24,13 +24,13 @@ class DioClient {
           if (token != null) {
             options.headers["Authorization"] = "Bearer " + token;
           }
-          handler.next(options);
+          return handler.next(options);
         },
         onResponse: (e, handler) {
-          handler.next(e);
+          return handler.next(e);
         },
         onError: (e, handler) {
-          handler.next(e);
+          return handler.next(e);
         },
       ));
     }

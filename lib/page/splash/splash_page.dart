@@ -27,6 +27,7 @@ class _SplashPageContainerState extends State<SplashPageContainer> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // SPref.instance.clearSPref();
     Future.delayed(Duration(seconds: 3 ) , () async{
       var token = SPref.instance.get(ConstantKey.TOKEN);
       if (token != null){

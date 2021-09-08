@@ -1,9 +1,16 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_food/base/base_widget.dart';
+import 'package:flutter_app_food/data/share_pre/share_preference.dart';
+import 'package:flutter_app_food/data/widget/container_listener_widget.dart';
+import 'package:flutter_app_food/data/widget/loading_widget.dart';
+import 'package:flutter_app_food/model/order_model.dart';
 import 'package:flutter_app_food/model/product_model.dart';
 import 'package:flutter_app_food/page/home/home_bloc.dart';
 import 'package:flutter_app_food/page/home/home_event.dart';
+import 'package:flutter_app_food/repository/order_repository.dart';
 import 'package:flutter_app_food/repository/product_repository.dart';
+import 'package:flutter_app_food/request/order_request.dart';
 import 'package:flutter_app_food/request/product_request.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -15,24 +22,31 @@ class HomePage extends StatelessWidget {
       child: HomePageContainer(),
       providers: [
         Provider(create: (context) => ProductRequest()),
-        ProxyProvider<ProductRequest , ProductRepository> (
+        Provider(create: (context) => OrderRequest()),
+        ProxyProvider<ProductRequest, ProductRepository>(
           create: (context) => ProductRepository(),
-          update: (context, request , repository){
+          update: (context, request, repository) {
             repository!.updateProductRequest(request);
             return repository;
           },
         ),
-        ChangeNotifierProxyProvider<ProductRepository,HomeBloc>(
+        ProxyProvider<OrderRequest, OrderRepository>(
+          create: (context) => OrderRepository(),
+          update: (context, request, repository) {
+            repository!.updateOrderRequest(request);
+            return repository;
+          },
+        ),
+        ChangeNotifierProxyProvider2<OrderRepository, ProductRepository,
+            HomeBloc>(
           create: (context) => HomeBloc(),
-          update: (context , repository , bloc){
-            bloc!.updateProductRepository(repository);
+          update: (context, orderRepository, productRepository, bloc) {
+            bloc!.updateProductRepository(productRepository);
+            bloc.updateOrderRepository(orderRepository);
             return bloc;
           },
         )
       ],
-      appBar: AppBar(
-        title: Text("Product"),
-      ),
     );
   }
 }
@@ -45,34 +59,74 @@ class HomePageContainer extends StatefulWidget {
 }
 
 class _HomePageContainerState extends State<HomePageContainer> {
-
   late HomeBloc bloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     bloc = context.read();
-    bloc.eventSink.add(HomeEventGetListProduct());
+    bloc.eventSink.add(HomeEventOrderCount());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamProvider.value(
-        initialData: null,
-        value: bloc.listProductStream,
-        child: Consumer<List<ProductModel>>(
-          builder: (context ,list , child){
-            if (list == null){
-              return SizedBox();
-            }
-            return ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context , index){
-                  return _buildItemFood(list[index]);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Product"),
+        actions: [
+          StreamProvider.value(
+            value: bloc.orderStream,
+            catchError: (_, __) => null,
+            initialData: null,
+            child: Consumer<OrderModel>(
+              builder: (context, orderModel, child) {
+                if (orderModel == null) {
+                  return IconButton(
+                      icon: Icon(Icons.shopping_cart), onPressed: () {});
                 }
-            );
-          },
+                return Container(
+                  margin: EdgeInsets.only(right: 10, top: 5),
+                  child: Badge(
+                      padding: EdgeInsets.all(10),
+                      badgeContent: Text(orderModel.total.toString(),
+                          style: TextStyle(fontSize: 15, color: Colors.white)),
+                      child: IconButton(
+                          icon: Icon(Icons.shopping_cart), onPressed: () {})),
+                );
+              },
+            ),
+          )
+        ],
+      ),
+      body: ContainerListenerWidget<HomeBloc>(
+        callback: (event) {
+          switch (event.runtimeType) {
+            case HomeEventGetOrderSuccess:
+            case HomeEventGetOrderNotInit:
+              bloc.eventSink.add(HomeEventGetListProduct());
+              break;
+          }
+        },
+        child: LoadingWidget(
+          bloc: bloc,
+          child: Container(
+            child: StreamProvider.value(
+              initialData: null,
+              value: bloc.listProductStream,
+              child: Consumer<List<ProductModel>>(
+                builder: (context, list, child) {
+                  if (list == null) {
+                    return SizedBox();
+                  }
+                  return ListView.builder(
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        return _buildItemFood(list[index]);
+                      });
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -115,12 +169,11 @@ class _HomePageContainerState extends State<HomePageContainer> {
                           style: TextStyle(fontSize: 12)),
                       ElevatedButton(
                         onPressed: () {
-                          // orderBloc
-                          //     .add(OrderAddFoodEvent(foodId: foodModel.foodId));
+                          bloc.eventSink.add(HomeEventAddCart(foodId: product.foodId!));
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.resolveWith((states) {
+                                MaterialStateProperty.resolveWith((states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return Color.fromARGB(200, 240, 102, 61);
                               } else {
@@ -132,7 +185,7 @@ class _HomePageContainerState extends State<HomePageContainer> {
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(10))))),
                         child:
-                        Text("Add To Cart", style: TextStyle(fontSize: 14)),
+                            Text("Add To Cart", style: TextStyle(fontSize: 14)),
                       ),
                     ],
                   ),

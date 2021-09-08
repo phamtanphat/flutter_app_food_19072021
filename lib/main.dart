@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: "/splash",
+      initialRoute: "/sign-in",
       routes: {
         "/sign-in": (context) => SignInPage(),
         "/sign-up": (context) => SignUpPage(),

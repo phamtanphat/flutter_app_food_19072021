@@ -29,4 +29,20 @@ class OrderRepository{
     }
     return completer.future;
   }
+
+  Future<OrderModel> addProductToCart(String foodId) async{
+    Completer<OrderModel> completer = Completer();
+    try{
+      Response response = await _orderRequest.addCart(foodId);
+      if (response.statusCode == 200){
+        OrderModel orderModel = OrderModel.fromJson(response.data['data']);
+        completer.complete(orderModel);
+      }
+    }on DioError catch (dioError){
+      completer.completeError(dioError.response?.data["message"]);
+    } catch(e){
+      completer.completeError(e.toString());
+    }
+    return completer.future;
+  }
 }
