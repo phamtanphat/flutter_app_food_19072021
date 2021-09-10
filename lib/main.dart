@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_food/page/cart/cart_page.dart';
 import 'package:flutter_app_food/page/home/home_page.dart';
 import 'package:flutter_app_food/page/sign_in/sign_in_page.dart';
 import 'package:flutter_app_food/page/sign_up/sign_up_page.dart';
@@ -12,12 +13,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: "/sign-in",
+      initialRoute: "/splash",
       routes: {
         "/sign-in": (context) => SignInPage(),
         "/sign-up": (context) => SignUpPage(),
         "/splash": (context) => SplashPage(),
         "/home": (context) => HomePage(),
+        "/cart" : (context) => CartPage()
       },
     );
   }

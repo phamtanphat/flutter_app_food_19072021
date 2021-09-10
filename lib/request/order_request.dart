@@ -11,4 +11,8 @@ class OrderRequest{
       "foodId" : foodId
     });
   }
+
+  Future getListCart(){
+    return DioClient.instance.dio.get("order/shopping-cart");
+  }
 }

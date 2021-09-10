@@ -82,7 +82,10 @@ class _HomePageContainerState extends State<HomePageContainer> {
               builder: (context, orderModel, child) {
                 if (orderModel == null) {
                   return IconButton(
-                      icon: Icon(Icons.shopping_cart), onPressed: () {});
+                      icon: Icon(Icons.shopping_cart),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/cart");
+                      });
                 }
                 return Container(
                   margin: EdgeInsets.only(right: 10, top: 5),
@@ -91,7 +94,10 @@ class _HomePageContainerState extends State<HomePageContainer> {
                       badgeContent: Text(orderModel.total.toString(),
                           style: TextStyle(fontSize: 15, color: Colors.white)),
                       child: IconButton(
-                          icon: Icon(Icons.shopping_cart), onPressed: () {})),
+                          icon: Icon(Icons.shopping_cart),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/cart" , arguments: {"orderId" : orderModel.orderId});
+                          })),
                 );
               },
             ),
@@ -169,7 +175,8 @@ class _HomePageContainerState extends State<HomePageContainer> {
                           style: TextStyle(fontSize: 12)),
                       ElevatedButton(
                         onPressed: () {
-                          bloc.eventSink.add(HomeEventAddCart(foodId: product.foodId!));
+                          bloc.eventSink
+                              .add(HomeEventAddCart(foodId: product.foodId!));
                         },
                         style: ButtonStyle(
                             backgroundColor:
