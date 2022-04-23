@@ -29,10 +29,14 @@ class _SplashPageContainerState extends State<SplashPageContainer> {
 
     // SPref.instance.clearSPref();
     Future.delayed(Duration(seconds: 3 ) , () async{
-      var token = SPref.instance.get(ConstantKey.TOKEN);
-      if (token != null){
-        Navigator.pushReplacementNamed(context, "/home");
-      }else{
+      try{
+        var token = await SPref.instance.get(ConstantKey.TOKEN);
+        if (token != null){
+          Navigator.pushReplacementNamed(context, "/home");
+        }else{
+          Navigator.pushReplacementNamed(context, "/sign-in");
+        }
+      }catch (e){
         Navigator.pushReplacementNamed(context, "/sign-in");
       }
     });
